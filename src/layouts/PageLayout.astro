@@ -1,0 +1,55 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Header from '~/components/widgets/Header.astro';
+import Footer from '~/components/widgets/Footer.astro';
+
+import { getHeaderData, getFooterData } from '~/navigation';
+import { getLang, localize, stripLang } from '~/i18n';
+import { getCanonical } from '~/utils/permalinks';
+
+import type { MetaData } from '~/types';
+
+export interface Props {
+  metadata?: MetaData;
+}
+
+const { metadata } = Astro.props;
+
+const lang = getLang(Astro.url);
+const pagePath = stripLang(Astro.url.pathname);
+const headerData = getHeaderData(lang);
+const footerData = getFooterData(lang);
+const langSwitch =
+  lang === 'ja'
+    ? { text: 'EN', href: localize(pagePath, 'en'), ariaLabel: 'English', hreflang: 'en' }
+    : { text: '日本語', href: localize(pagePath, 'ja'), ariaLabel: '日本語', hreflang: 'ja' };
+---
+
+<Layout metadata={metadata} lang={lang}>
+  <Fragment slot="head">
+    <link rel="alternate" hreflang="ja" href={String(getCanonical(localize(pagePath, 'ja')))} />
+    <link rel="alternate" hreflang="en" href={String(getCanonical(localize(pagePath, 'en')))} />
+    <slot name="head" />
+  </Fragment>
+  {
+    /*
+    Slot fallbacks are rendered explicitly. With `<slot name="x">fallback</slot>`
+    Astro still evaluates the fallback when the page overrides the slot, and
+    astro-icon then believes the icons inside it (the RSS icon of the default
+    header, for instance) were already emitted, so their SVG sprite symbol
+    goes missing on that page.
+  */
+  }
+  {Astro.slots.has('announcement') && <slot name="announcement" />}
+  {
+    Astro.slots.has('header') ? (
+      <slot name="header" />
+    ) : (
+      <Header {...headerData} isSticky showToggleTheme homeHref={localize('/', lang)} langSwitch={langSwitch} />
+    )
+  }
+  <main class="flex-1">
+    <slot />
+  </main>
+  {Astro.slots.has('footer') ? <slot name="footer" /> : <Footer {...footerData} homeHref={localize('/', lang)} />}
+</Layout>

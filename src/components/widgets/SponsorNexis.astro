@@ -1,0 +1,47 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import type { Lang } from '~/i18n';
+import { NEXIS_R_URL } from '~/navigation';
+import nexisLogo from '~/assets/images/nexis-r.png';
+
+// Quiet one-line sponsor credit shown just above the footer.
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const T = {
+  ja: {
+    heading: 'スポンサー：ながおか次世代ロボット産業化機構（Nexis-R）',
+    text: '2004年の中越地震をきっかけに、長岡市内を中心とする企業と長岡技術科学大学の学生で立ち上げられたロボット団体です。NuTech-R はその経験とノウハウをもとに活動しています。',
+    link: 'Nexis-R のサイト',
+  },
+  en: {
+    heading: 'Sponsor: Nexis-R',
+    text: 'A robotics group founded after the 2004 Chuetsu earthquake by companies based mainly in Nagaoka and students of Nagaoka University of Technology. NuTech-R builds on its experience and know-how.',
+    link: 'Nexis-R website (Japanese)',
+  },
+}[lang];
+---
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 pb-12 md:pb-16 not-prose">
+  <div
+    class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 border-t border-gray-200 pt-8 dark:border-slate-800"
+  >
+    <a
+      href={NEXIS_R_URL}
+      class="shrink-0 self-start sm:self-auto rounded-md bg-white p-1.5 ring-1 ring-gray-200 dark:ring-slate-700"
+    >
+      <Image src={nexisLogo} alt="Nexis-R" width={56} class="h-12 w-12 object-contain" />
+    </a>
+    <p class="text-sm leading-relaxed text-muted">
+      <span class="font-medium text-default">{T.heading}</span><br />
+      {T.text}
+      <a href={NEXIS_R_URL} class="ml-1 inline-flex items-center gap-0.5 text-primary hover:underline">
+        {T.link}<Icon name="tabler:external-link" class="h-3.5 w-3.5" />
+      </a>
+    </p>
+  </div>
+</section>

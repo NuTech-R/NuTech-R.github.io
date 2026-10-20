@@ -1,0 +1,72 @@
+site:
+  name: NuTech-R
+  site: 'https://nutech-r.github.io'
+  base: '/'
+  trailingSlash: false
+
+  googleSiteVerificationId: null
+
+# Default SEO metadata
+metadata:
+  title:
+    default: NuTech-R | 長岡技術科学大学 レスキューロボット開発チーム
+    template: '%s | NuTech-R'
+  description: 'NuTech-R は、レスキューロボットの研究開発を行う長岡技術科学大学の学生チームです。RoboCup レスキュー実機リーグや World Robot Summit に出場しています。'
+  robots:
+    index: true
+    follow: true
+  openGraph:
+    site_name: NuTech-R
+    images:
+      - url: '~/assets/images/og-image.jpg'
+        width: 1200
+        height: 628
+    type: website
+  twitter:
+    handle: null
+    site: null
+    cardType: summary_large_image
+
+i18n:
+  language: ja
+  textDirection: ltr
+
+apps:
+  blog:
+    isEnabled: false
+    postsPerPage: 10
+
+    post:
+      isEnabled: true
+      permalink: '/news/%slug%'
+      robots:
+        index: true
+
+    list:
+      isEnabled: true
+      pathname: 'news'
+      robots:
+        index: true
+
+    category:
+      isEnabled: false
+      pathname: 'category'
+      robots:
+        index: true
+
+    tag:
+      isEnabled: false
+      pathname: 'tag'
+      robots:
+        index: false
+
+    isRelatedPostsEnabled: false
+    relatedPostsCount: 4
+
+analytics:
+  vendors:
+    googleAnalytics:
+      id: null # or "G-XXXXXXXXXX"
+
+ui:
+  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"

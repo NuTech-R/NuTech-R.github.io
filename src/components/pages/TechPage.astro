@@ -1,0 +1,167 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/widgets/PageHero.astro';
+import Content from '~/components/widgets/Content.astro';
+import Projects from '~/components/widgets/Projects.astro';
+import Button from '~/components/ui/Button.astro';
+import type { Lang } from '~/i18n';
+import { GITHUB_URL, ZENN_PUBLICATION_URL } from '~/navigation';
+import heroImage from '~/assets/images/tech/fabrication.jpg';
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// 日本語と英語の文章。片方を直したらもう片方も直す。
+const T = {
+  ja: {
+    title: '技術紹介',
+    description:
+      'NuTech-R はハードウェアからソフトウェアまで、ロボットに関わる技術の開発をチーム内で総合的に行っています。3DCAD 設計、部品製作、ROS 2、YOLO、LiDAR SLAM など。',
+    heroSubtitle:
+      'ロボットに関わる技術の開発を総合的に行っています。ハードウェア・ソフトウェアともにチーム内で開発し、ノウハウを蓄積しながらつくっています。',
+    cadTitle: '3DCAD を用いた機体設計',
+    cadAlt: 'クローラーロボットの 3DCAD モデル',
+    cadText:
+      '機体設計は 3DCAD を用いて行っています。各ロボットの 3D モデルを作成し、CAD 上で組み立てと簡易的なシミュレーションを行っています。',
+    fabTitle: '部品製作・組み立て',
+    fabAlt: '活動室でロボットを組み立てるメンバー',
+    fabText:
+      '機体に必要なカーボン板やステンレス部品は外部の企業に依頼して製作しています。活動室にはボール盤・旋盤・3D プリンタ・CNC があり、外注と使い分けながら自分たちでも部品を製作しています。',
+    softwareTitle: 'ソフトウェア',
+    software: [
+      {
+        title: 'ROS 2 を用いた制御開発',
+        description:
+          '機体の制御にはロボット用ミドルウェア ROS 2 を使用。目視外での遠隔操縦に必要な複数カメラの映像転送や音声の送受信に加え、モータ制御や作業用アームの逆運動学など、ロボットに関わるすべての制御を ROS 2 で迅速に開発しています。',
+        alt: 'RViz で表示した 3D 点群',
+        tags: ['ROS 2'],
+      },
+      {
+        title: 'YOLO を用いた物体認識',
+        description:
+          'ロボットに搭載した 2D カメラで、任意の物体を YOLO で認識できます。RoboCup レスキュー実機リーグでは危険物ラベルを正しく認識し、その結果を自動で報告する必要があります。',
+        alt: '危険物ラベルを YOLO で認識している画面',
+        tags: ['YOLO', '画像認識'],
+      },
+      {
+        title: 'LiDAR を使った SLAM',
+        description:
+          '機体に搭載した 3D LiDAR で SLAM を行い、2D マップ・3D マップのどちらも作成できます。任意の物体を地図内に反映する機能も備えています。',
+        alt: 'SLAM で作成した 2D 地図',
+        tags: ['SLAM', '3D LiDAR'],
+      },
+    ],
+    shareTitle: 'ノウハウの共有',
+    shareAlt: 'Zenn に公開している技術記事の画面',
+    shareText:
+      'ソフトウェアに関する情報を積極的に発信しています。コードは GitHub で、ROS 2 に関する記事は Zenn で公開しています。チーム内にとどまらず、レスキューロボット競技会に参加するコミュニティに貢献できるよう日々取り組んでいます。',
+    zennButton: 'Zenn（チーム wiki）',
+  },
+  en: {
+    title: 'Technology',
+    description:
+      'NuTech-R develops every part of its robots in-house, from hardware to software: 3D CAD design, part fabrication, ROS 2, YOLO and LiDAR SLAM.',
+    heroSubtitle:
+      'We develop all the technologies our robots need. Both hardware and software are built in-house, and we keep building up our know-how as we go.',
+    cadTitle: 'Design with 3D CAD',
+    cadAlt: '3D CAD model of a crawler robot',
+    cadText:
+      'Our robots are designed in 3D CAD. We build a 3D model of each robot and use it for virtual assembly and simple simulations.',
+    fabTitle: 'Fabrication and Assembly',
+    fabAlt: 'A member assembling a robot in the workshop',
+    fabText:
+      'Carbon plates and stainless-steel parts are made for us by outside companies. Our workshop also has a drill press, a lathe, 3D printers and a CNC machine, so we make parts ourselves as well.',
+    softwareTitle: 'Software',
+    software: [
+      {
+        title: 'Control with ROS 2',
+        description:
+          'Our robots run on the ROS 2 robotics middleware. Everything from multi-camera video and audio links for remote operation beyond line of sight to motor control and inverse kinematics for the arm is developed quickly with ROS 2.',
+        alt: '3D point cloud shown in RViz',
+        tags: ['ROS 2'],
+      },
+      {
+        title: 'Object Recognition with YOLO',
+        description:
+          'The onboard 2D camera can recognise any object with YOLO. In the RoboCup Rescue Robot League, robots must correctly identify hazmat labels and report the results automatically.',
+        alt: 'Hazmat label recognised by YOLO',
+        tags: ['YOLO', 'Vision'],
+      },
+      {
+        title: 'SLAM with LiDAR',
+        description:
+          'With the onboard 3D LiDAR the robot performs SLAM and can build both 2D and 3D maps, including marking detected objects on the map.',
+        alt: '2D map built with SLAM',
+        tags: ['SLAM', '3D LiDAR'],
+      },
+    ],
+    shareTitle: 'Sharing Our Know-how',
+    shareAlt: 'Our technical articles on Zenn',
+    shareText:
+      'We actively share what we learn about software: our code is on GitHub and our ROS 2 articles (in Japanese) are on Zenn. We hope to contribute not only to our own team but to the whole rescue robot competition community.',
+    zennButton: 'Zenn (team wiki)',
+  },
+}[lang];
+
+const softwareImages = [
+  '~/assets/images/tech/ros2.png',
+  '~/assets/images/tech/yolo.png',
+  '~/assets/images/tech/slam.png',
+];
+const metadata = { title: T.title, description: T.description };
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    tagline="Technology"
+    title={T.title}
+    subtitle={T.heroSubtitle}
+    image={heroImage}
+    imagePosition="center 30%"
+  />
+
+  <Content
+    tagline="Hardware"
+    title={T.cadTitle}
+    image={{ src: '~/assets/images/tech/cad.png', alt: T.cadAlt, aspect: '4/3' }}
+  >
+    <Fragment slot="content">{T.cadText}</Fragment>
+  </Content>
+
+  <Content
+    isReversed
+    tagline="Hardware"
+    title={T.fabTitle}
+    image={{ src: '~/assets/images/tech/fabrication.jpg', alt: T.fabAlt, aspect: '4/3' }}
+  >
+    <Fragment slot="content">{T.fabText}</Fragment>
+  </Content>
+
+  <Projects
+    tagline="Software"
+    title={T.softwareTitle}
+    columns={3}
+    items={T.software.map(({ title, description, alt, tags }, i) => ({
+      title,
+      description,
+      tags,
+      image: { src: softwareImages[i], alt },
+    }))}
+  />
+
+  <Content
+    tagline="Knowledge Sharing"
+    title={T.shareTitle}
+    image={{ src: '~/assets/images/tech/zenn.png', alt: T.shareAlt, aspect: '4/3' }}
+  >
+    <Fragment slot="content">
+      <p>{T.shareText}</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <Button variant="primary" href={GITHUB_URL} icon="tabler:brand-github" text="GitHub" />
+        <Button variant="secondary" href={ZENN_PUBLICATION_URL} icon="tabler:notebook" text={T.zennButton} />
+      </div>
+    </Fragment>
+  </Content>
+</Layout>

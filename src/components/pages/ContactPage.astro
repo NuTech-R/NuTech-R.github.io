@@ -1,0 +1,58 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/widgets/PageHero.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Button from '~/components/ui/Button.astro';
+import type { Lang } from '~/i18n';
+import { CONTACT_FORM_URL } from '~/navigation';
+import heroImage from '~/assets/images/team-work.png';
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// 日本語と英語の文章。片方を直したらもう片方も直す。
+const T = {
+  ja: {
+    title: 'お問い合わせ',
+    description: 'NuTech-R へのお問い合わせは Google フォームからお願いします。',
+    subtitle: 'お問い合わせは、下記の Google フォームからご記入ください。',
+    formTitle: 'NuTech-R お問い合わせフォーム',
+    loading: '読み込んでいます…',
+    fallback: 'フォームが表示されない場合は、こちらから開いてください。',
+    open: 'Google フォームを開く',
+  },
+  en: {
+    title: 'Contact',
+    description: 'Contact NuTech-R through our Google Form.',
+    subtitle:
+      'Please contact us through the Google Form below. The form is in Japanese, but you are welcome to write in English.',
+    formTitle: 'NuTech-R contact form',
+    loading: 'Loading…',
+    fallback: 'If the form does not appear, open it here.',
+    open: 'Open the Google Form',
+  },
+}[lang];
+
+const metadata = { title: T.title, description: T.description };
+---
+
+<Layout metadata={metadata}>
+  <PageHero tagline="Contact" title={T.title} subtitle={T.subtitle} image={heroImage} />
+
+  <WidgetWrapper containerClass="max-w-3xl mx-auto">
+    <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-slate-800">
+      <iframe
+        src={`${CONTACT_FORM_URL}?embedded=true`}
+        title={T.formTitle}
+        class="block w-full h-[980px] border-0"
+        loading="lazy">{T.loading}</iframe
+      >
+    </div>
+    <p class="mt-6 text-center text-sm text-muted">{T.fallback}</p>
+    <div class="mt-3 text-center">
+      <Button variant="secondary" href={CONTACT_FORM_URL} icon="tabler:external-link" text={T.open} />
+    </div>
+  </WidgetWrapper>
+</Layout>

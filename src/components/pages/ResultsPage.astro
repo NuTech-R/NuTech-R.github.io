@@ -1,0 +1,167 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/widgets/PageHero.astro';
+import { pick, type Bilingual, type Lang } from '~/i18n';
+import wrs2025 from '~/assets/images/results/wrs2025.png';
+import robocupJo2025 from '~/assets/images/results/robocup-jo2025.png';
+import wrsPre2024 from '~/assets/images/results/wrs-pre2024.png';
+import robocupJo2024 from '~/assets/images/results/robocup-jo2024.png';
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+interface Result {
+  date: Bilingual;
+  title: Bilingual;
+  rank: Bilingual;
+  winner?: boolean;
+  detail: Bilingual;
+  /** Nexis-R の名義で出場した大会 */
+  asNexisR?: boolean;
+  link: { href: string; text: Bilingual };
+  image: ImageMetadata;
+  alt: Bilingual;
+}
+
+// 新しい結果は先頭に追加する。写真は src/assets/images/results/ に置いて上で import する。
+const results: Result[] = [
+  {
+    date: { ja: '2025年10月', en: 'Oct 2025' },
+    title: {
+      ja: 'World Robot Summit 2025 プラント災害チャレンジ',
+      en: 'World Robot Summit 2025 Harsh Environment F-REI Challenge — Plant Disaster Challenge',
+    },
+    rank: { ja: '優勝', en: 'Winner' },
+    winner: true,
+    detail: {
+      ja: '2025年10月10日〜12日・福島ロボットテストフィールド',
+      en: 'Oct 10–12, 2025 · Fukushima Robot Test Field',
+    },
+    link: {
+      href: 'https://wrs.f-rei.go.jp/',
+      text: { ja: 'World Robot Summit 2025 公式サイト', en: 'WRS 2025 website' },
+    },
+    image: wrs2025,
+    alt: { ja: 'WRS 2025 での集合写真', en: 'The team at WRS 2025' },
+  },
+  {
+    date: { ja: '2025年5月', en: 'May 2025' },
+    title: {
+      ja: 'RoboCup JapanOpen 2025 レスキュー実機リーグ',
+      en: 'RoboCup Japan Open 2025 — Rescue Robot League',
+    },
+    rank: { ja: '3位', en: '3rd place' },
+    detail: { ja: '2025年5月2日〜5日・滋賀ダイハツアリーナ', en: 'May 2–5, 2025 · Shiga Daihatsu Arena' },
+    asNexisR: true,
+    link: {
+      href: 'https://www.robocup.or.jp/japanopen2025/',
+      text: { ja: 'JapanOpen 2025 NEWS', en: 'Japan Open 2025 news (Japanese)' },
+    },
+    image: robocupJo2025,
+    alt: { ja: 'RoboCup JapanOpen 2025 での集合写真', en: 'The team at RoboCup Japan Open 2025' },
+  },
+  {
+    date: { ja: '2024年10月', en: 'Oct 2024' },
+    title: {
+      ja: 'WRS 過酷環境 F-REI チャレンジ プレ大会',
+      en: 'WRS Harsh Environment F-REI Challenge — Pre-Competition',
+    },
+    rank: { ja: '3位', en: '3rd place' },
+    detail: {
+      ja: '2024年10月2日〜5日・福島ロボットテストフィールド',
+      en: 'Oct 2–5, 2024 · Fukushima Robot Test Field',
+    },
+    asNexisR: true,
+    link: {
+      href: 'https://wrs.f-rei.go.jp/pre2024/pdf/competition_results.pdf',
+      text: { ja: '競技結果（PDF）', en: 'Results (PDF, Japanese)' },
+    },
+    image: wrsPre2024,
+    alt: { ja: 'WRS プレ大会での集合写真', en: 'The team at the WRS pre-competition' },
+  },
+  {
+    date: { ja: '2024年4月', en: 'Apr 2024' },
+    title: {
+      ja: 'RoboCup JapanOpen 2024 レスキュー実機リーグ',
+      en: 'RoboCup Japan Open 2024 — Rescue Robot League',
+    },
+    rank: { ja: '3位', en: '3rd place' },
+    detail: { ja: '2024年4月27日〜29日・滋賀ダイハツアリーナ', en: 'Apr 27–29, 2024 · Shiga Daihatsu Arena' },
+    asNexisR: true,
+    link: {
+      href: 'https://www.robocup.or.jp/japanopen2024/',
+      text: { ja: 'JapanOpen 2024 NEWS', en: 'Japan Open 2024 news (Japanese)' },
+    },
+    image: robocupJo2024,
+    alt: { ja: 'RoboCup JapanOpen 2024 での集合写真', en: 'The team at RoboCup Japan Open 2024' },
+  },
+];
+
+const T = {
+  ja: {
+    title: '大会結果',
+    description: 'NuTech-R のこれまでの大会結果です。',
+    nexisNote: '※ Nexis-R の名義で NuTech-R の学生メンバーが出場',
+  },
+  en: {
+    title: 'Results',
+    description: 'Competition results of NuTech-R.',
+    nexisNote: '* Entered under the Nexis-R name by NuTech-R student members',
+  },
+}[lang];
+
+const metadata = { title: T.title, description: T.description };
+---
+
+<Layout metadata={metadata}>
+  <PageHero tagline="Results" title={T.title} image={wrs2025} imagePosition="center 35%" />
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+    <ul class="grid gap-8 md:grid-cols-2 list-none">
+      {
+        results.map((r) => (
+          <li class="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <Image
+              src={r.image}
+              alt={pick(r.alt, lang)}
+              widths={[480, 720, 960]}
+              sizes="(max-width: 767px) 100vw, 560px"
+              format="webp"
+              class="aspect-[16/9] w-full object-cover"
+            />
+            <div class="flex flex-1 flex-col p-6">
+              <div class="flex items-center gap-3">
+                <time class="text-sm font-semibold text-primary">{pick(r.date, lang)}</time>
+                <span
+                  class:list={[
+                    'rounded-full px-2.5 py-0.5 text-xs font-bold',
+                    r.winner
+                      ? 'bg-amber-100 text-amber-800 dark:bg-amber-400/20 dark:text-amber-200'
+                      : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300',
+                  ]}
+                >
+                  {pick(r.rank, lang)}
+                </span>
+              </div>
+              <h2 class="mt-2 text-lg font-bold leading-snug text-heading">{pick(r.title, lang)}</h2>
+              <p class="mt-2 text-sm text-muted">{pick(r.detail, lang)}</p>
+              {r.asNexisR && <p class="mt-1 text-sm text-muted">{T.nexisNote}</p>}
+              <a
+                href={r.link.href}
+                class="mt-auto pt-4 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+              >
+                {pick(r.link.text, lang)}
+                <Icon name="tabler:external-link" class="h-4 w-4" />
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>

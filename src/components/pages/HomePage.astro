@@ -1,0 +1,138 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroPhoto from '~/components/widgets/HeroPhoto.astro';
+import Content from '~/components/widgets/Content.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import SponsorNexis from '~/components/widgets/SponsorNexis.astro';
+import StructuredData from '~/components/common/StructuredData.astro';
+import { SITE } from 'astrowind:config';
+import { localize, type Lang } from '~/i18n';
+import { GITHUB_URL, ZENN_PUBLICATION_URL } from '~/navigation';
+import appleTouchIcon from '~/assets/favicons/apple-touch-icon.png';
+import heroImage from '~/assets/images/seek-rubble.jpg';
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// 日本語と英語の文章。片方を直したらもう片方も直す。
+const T = {
+  ja: {
+    title: 'NuTech-R | 長岡技術科学大学 レスキューロボット開発チーム',
+    description:
+      'NuTech-R は、レスキューロボットの研究開発を行う長岡技術科学大学の学生チームです。作業用クローラーロボット「Seek」を開発しています。',
+    heroAlt: '瓦礫の上の Seek',
+    heroTagline: '長岡技術科学大学',
+    heroSubtitle: 'レスキューロボットの研究開発を行う学生チームです。',
+    aboutTitle: 'NuTech-R とは',
+    aboutAlt: 'Seek と開発メンバーの集合写真',
+    about1: 'NuTech-R は長岡技術科学大学機械系の大学院生を中心に構成されるロボット開発チームです。',
+    about2: 'ハードウェアからソフトウェアまで学生自ら開発をし、競技会に出場しています。',
+    seekSubtitle: '作業用クローラーロボット',
+    seekAlt: 'コンクリート瓦礫の上の Seek',
+    seekText:
+      '過酷な環境下での活躍を目指して開発している作業マニピュレータ付きクローラーロボットです。本体を覆うメインクローラーと4本のサブクローラー、全長1.5m の6自由度アーム、5台の単眼カメラ・熱カメラ・3D LiDAR を備え、災害現場での調査やインフラ点検、危険区域での作業での活躍が期待されます。',
+    seekMore: 'Seek について詳しく見る',
+    outputsTitle: '情報発信',
+    outputsSubtitle: '開発で得たノウハウやソースコードを公開しています。',
+    zenn: 'ROS 2 やモーター制御など、開発に関する技術記事',
+    github: 'ソースコード',
+  },
+  en: {
+    title: 'NuTech-R | Rescue Robot Team, Nagaoka University of Technology',
+    description:
+      'NuTech-R is a student team at Nagaoka University of Technology researching and developing rescue robots. Our current robot is Seek, a crawler robot for field work.',
+    heroAlt: 'Seek on rubble',
+    heroTagline: 'Nagaoka University of Technology',
+    heroSubtitle: 'A student team researching and developing rescue robots.',
+    aboutTitle: 'About NuTech-R',
+    aboutAlt: 'The team with Seek',
+    about1:
+      'NuTech-R is a robot development team made up mainly of graduate students in mechanical engineering at Nagaoka University of Technology.',
+    about2: 'We develop everything ourselves, from hardware to software, and take part in robotics competitions.',
+    seekSubtitle: 'Crawler robot for field work',
+    seekAlt: 'Seek on concrete rubble',
+    seekText:
+      'A crawler robot with a work manipulator, built to operate in harsh environments. With a main crawler covering the body, four sub-crawlers, a 1.5 m 6-DoF arm, five monocular cameras, a thermal camera and a 3D LiDAR, it is designed for surveying disaster sites, inspecting infrastructure and working in hazardous areas.',
+    seekMore: 'Learn more about Seek',
+    outputsTitle: 'What We Share',
+    outputsSubtitle: 'We publish the know-how and source code from our development.',
+    zenn: 'Technical articles on ROS 2, motor control and more (in Japanese)',
+    github: 'Source code',
+  },
+}[lang];
+
+const metadata = { title: T.title, description: T.description, ignoreTitleTemplate: true };
+
+// Structured data for the site and its publisher, built only from `src/config.yaml`.
+const organizationId = `${SITE?.site}/#organization`;
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE?.site}/#website`,
+    name: SITE?.name,
+    url: SITE?.site,
+    inLanguage: lang,
+    publisher: { '@id': organizationId },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': organizationId,
+    name: SITE?.name,
+    url: SITE?.site,
+    logo: new URL(appleTouchIcon.src, SITE?.site).toString(),
+    sameAs: [GITHUB_URL],
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <StructuredData slot="head" schema={structuredData} />
+
+  <HeroPhoto image={heroImage} alt={T.heroAlt} tagline={T.heroTagline}>
+    <Fragment slot="title">NuTech-R</Fragment>
+    <Fragment slot="subtitle">{T.heroSubtitle}</Fragment>
+  </HeroPhoto>
+
+  <Content
+    id="about"
+    tagline="About Us"
+    title={T.aboutTitle}
+    image={{ src: '~/assets/images/team-arena.jpg', alt: T.aboutAlt, aspect: '4/3' }}
+  >
+    <Fragment slot="content">
+      <p>{T.about1}</p>
+      <p class="mt-4">{T.about2}</p>
+    </Fragment>
+  </Content>
+
+  <Content
+    id="seek"
+    isReversed
+    isImageFirstOnMobile
+    tagline="Robot"
+    title="Seek"
+    subtitle={T.seekSubtitle}
+    image={{ src: '~/assets/images/seek-field.jpg', alt: T.seekAlt, aspect: '4/3' }}
+    callToAction={{ text: T.seekMore, href: localize('/robots', lang), icon: 'tabler:arrow-right' }}
+  >
+    <Fragment slot="content">{T.seekText}</Fragment>
+  </Content>
+
+  <Features2
+    tagline="Outputs"
+    title={T.outputsTitle}
+    subtitle={T.outputsSubtitle}
+    columns={2}
+    items={[
+      { title: 'Zenn', description: T.zenn, icon: 'tabler:notebook', href: ZENN_PUBLICATION_URL },
+      { title: 'GitHub', description: T.github, icon: 'tabler:brand-github', href: GITHUB_URL },
+    ]}
+    classes={{ container: 'max-w-4xl' }}
+  />
+
+  <SponsorNexis lang={lang} />
+</Layout>
