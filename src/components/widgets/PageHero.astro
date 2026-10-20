@@ -15,7 +15,9 @@ export interface Props {
 const { title, tagline, subtitle, image, imagePosition = 'center' } = Astro.props;
 ---
 
-<section class="relative isolate overflow-hidden bg-slate-900 not-prose">
+<section
+  class="relative isolate overflow-hidden bg-slate-900 not-prose flex items-center min-h-[320px] md:min-h-[360px]"
+>
   {
     image && (
       <Image
@@ -35,7 +37,7 @@ const { title, tagline, subtitle, image, imagePosition = 'center' } = Astro.prop
     aria-hidden="true"
   >
   </div>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24">
+  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-12">
     {tagline && <p class="text-sm font-semibold uppercase tracking-[0.2em] text-sky-300/90">{tagline}</p>}
     <h1 class="mt-2 text-3xl md:text-5xl font-bold tracking-tight text-white font-heading">{title}</h1>
     {subtitle && <p class="mt-4 max-w-3xl text-base md:text-lg leading-relaxed text-slate-200">{subtitle}</p>}

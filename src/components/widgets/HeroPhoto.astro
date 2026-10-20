@@ -18,7 +18,9 @@ export interface Props {
 const { image, alt, tagline, badge, actions = [] } = Astro.props;
 ---
 
-<section class="relative isolate overflow-hidden bg-slate-950 not-prose">
+<section
+  class="relative isolate overflow-hidden bg-slate-950 not-prose flex items-center min-h-[320px] md:min-h-[360px]"
+>
   <Image
     src={image}
     alt={alt}
@@ -36,27 +38,27 @@ const { image, alt, tagline, badge, actions = [] } = Astro.props;
   </div>
   <div class="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-slate-950/60" aria-hidden="true"></div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28">
+  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-12">
     <div class="max-w-2xl">
       {
         badge &&
           (badge.href ? (
             <a
               href={badge.href}
-              class="inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-amber-400/15 px-3.5 py-1.5 text-sm font-medium text-amber-100 backdrop-blur hover:bg-amber-400/25 transition"
+              class="mb-8 inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-amber-400/15 px-3.5 py-1.5 text-sm font-medium text-amber-100 backdrop-blur hover:bg-amber-400/25 transition"
             >
               <span aria-hidden="true">🏆</span>
               {badge.text}
               <span aria-hidden="true">→</span>
             </a>
           ) : (
-            <span class="inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-amber-400/15 px-3.5 py-1.5 text-sm font-medium text-amber-100">
+            <span class="mb-8 inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-amber-400/15 px-3.5 py-1.5 text-sm font-medium text-amber-100">
               <span aria-hidden="true">🏆</span>
               {badge.text}
             </span>
           ))
       }
-      {tagline && <p class="mt-8 text-base font-medium text-slate-300">{tagline}</p>}
+      {tagline && <p class="text-base font-medium text-slate-300">{tagline}</p>}
       <h1 class="mt-3 text-4xl md:text-5xl font-bold leading-tight tracking-tight text-white font-heading">
         <slot name="title" />
       </h1>
