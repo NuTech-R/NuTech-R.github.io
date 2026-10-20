@@ -157,13 +157,16 @@
 
 /*
   Japanese line breaking: the build inserts <wbr> between phrases (integrations/budoux-wbr.ts), and
-  keep-all makes those the only break points, so lines no longer split a word. break-word still
-  wraps anything too long for its box. text-wrap: pretty avoids a lone character on the last line.
+  keep-all makes those the only break points, so lines no longer split a word. `anywhere` still
+  wraps a phrase that is longer than its box (unlike break-word it also lets flex/grid columns shrink,
+  so a long katakana phrase cannot push the page wider than a phone screen). text-wrap: pretty avoids
+  a lone character on the last line.
 */
 @layer base {
   :where(body) {
     word-break: keep-all;
     overflow-wrap: break-word;
+    overflow-wrap: anywhere;
   }
   :where(p, li, dd) {
     text-wrap: pretty;
