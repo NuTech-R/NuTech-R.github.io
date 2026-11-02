@@ -2,7 +2,7 @@ import { localize, type Lang } from './i18n';
 
 export const GITHUB_URL = 'https://github.com/NuTech-R';
 export const ZENN_PUBLICATION_URL = 'https://zenn.dev/p/nutechr';
-export const YOUTUBE_SEEK_URL = 'https://www.youtube.com/watch?v=Hudw18oglWg';
+export const YOUTUBE_SEEK_URL = 'https://www.youtube.com/watch?v=4cRvfL_BxuA';
 export const CONTACT_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSepabyDR055HVkLUhzj5XtbqV4RzWfwHWocCNPA0eITaLjBmg/viewform';
 export const NEXIS_R_URL = 'https://nexisr2016.wixsite.com/benri-robot';
